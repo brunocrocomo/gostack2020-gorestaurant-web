@@ -53,11 +53,14 @@ const Dashboard: React.FC = () => {
     try {
       const { id } = food;
 
-      await api.put(`/foods/${id}`, food);
+      const response = await api.put(`/foods/${id}`, food);
+      const updatedFood = response.data;
 
-      const anotherFoods = foods.filter(f => f.id !== id);
+      const updatedFoods = foods.map(f =>
+        f.id === updatedFood.id ? updatedFood : f,
+      );
 
-      setFoods([...anotherFoods, food]);
+      setFoods(updatedFoods);
     } catch (err) {
       console.log(err);
     }
